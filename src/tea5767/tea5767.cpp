@@ -24,13 +24,13 @@ TEA5767N::TEA5767N() {
 // Param5 :: The I2C bus clock speed in Khz , max 400.
 void TEA5767N::begin(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed) {
  
-  	_i2cAddress = i2cAddress;
+	_i2cAddress = i2cAddress;
 	i2c_inst_t *i2c = i2c_type;
 	i2c_init(i2c, CLKspeed * 1000);
 	gpio_set_function(SDApin, GPIO_FUNC_I2C);
-    gpio_set_function(SCLKpin, GPIO_FUNC_I2C);
+	gpio_set_function(SCLKpin, GPIO_FUNC_I2C);
 	gpio_pull_up(SDApin);
-    gpio_pull_up(SCLKpin);
+	gpio_pull_up(SCLKpin);
 	
 }
 
@@ -41,6 +41,25 @@ void TEA5767N::deinitI2C(i2c_inst_t* i2c_type)
 	i2c_inst_t *i2c = i2c_type;
 	i2c_deinit(i2c); 	
 }
+
+// Check Connection Function
+// Check if TEA5767 is on the bus asks for one byte
+// Returns int16_t if less than zero = error 
+int16_t TEA5767N::CheckConnection()
+{
+	int16_t returnValue;
+	uint8_t rxdata;
+	returnValue = i2c_read_blocking(i2c, TEA5767_I2C_ADDRESS , &rxdata, 1, false);
+	if (bdebug) printf("CheckConnection %d , %u \r\n ", returnValue , rxdata);
+	return returnValue;
+}
+
+bool TEA5767N::GetIsConnected(void)
+{return isConnected;}
+	  
+	  
+void TEA5767N::SetIsConnected(bool connected)
+{isConnected = connected;}
 
 // Set the debug mode
 // Param1  : bool : true debug on ,false debug off.
@@ -115,8 +134,7 @@ void TEA5767N::transmitData() {
 	uint8_t txbyte = 0;
 	returnValue =i2c_write_timeout_us(i2c, _i2cAddress, transmission_data, 5 ,false, TEA5767_I2C_DELAY);
 	//returnValue = i2c_write_blocking(i2c, _i2cAddress, transmission_data, 5 ,false); // alternative
-	if (bdebug == true)
-		printf(" tx return value %d \r\n", returnValue);
+	if (bdebug) printf(" tx return value %d \r\n", returnValue);
 	busy_wait_ms(100);
 }
 

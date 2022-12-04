@@ -66,6 +66,7 @@
 class TEA5767N {
 	private:
 	  bool bdebug = false; // If true debug information printed
+	  bool isConnected = false;
 	  i2c_inst_t * i2c = i2c0;  // i2C port number
 	  uint8_t _i2cAddress;
 
@@ -98,6 +99,9 @@ class TEA5767N {
 	  void begin(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed);
 	  void deinitI2C(i2c_inst_t* i2c_type);
 	  void setDebug(bool OnOff);
+	  bool GetIsConnected(void);
+	  void SetIsConnected(bool);
+	  int16_t CheckConnection(void);
 
 	  void selectFrequency(float);
 	  void selectFrequencyMuting(float);
