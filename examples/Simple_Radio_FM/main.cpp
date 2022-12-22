@@ -12,13 +12,12 @@
 #include "pico/stdlib.h"
 #include "tea5767/tea5767.hpp"
 
-TEA5767N radio;
+TEA5767N radio(TEA5767_I2C_ADDRESS, i2c0, 16, 17, 100);
 
 int main() {
 
   busy_wait_ms(100);
-  //  Init I2C (I2C Address, i2c_type,  SDA pin, SCLK pin, I2C CLKspeed)
-  radio.begin(TEA5767_I2C_ADDRESS, i2c0, 4, 5, 100);
+  radio.begin();
   busy_wait_ms(1000);
 
   // Tune to this station , 94.8 Classic hits FM

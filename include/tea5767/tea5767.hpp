@@ -67,8 +67,11 @@ class TEA5767N {
 	private:
 	  bool bdebug = false; // If true debug information printed
 	  bool isConnected = false;
-	  i2c_inst_t * i2c = i2c0;  // i2C port number
+	  i2c_inst_t * i2c;  // i2C port number
 	  uint8_t _i2cAddress;
+	  uint8_t _SDataPin;
+	  uint8_t _SClkPin;
+	  uint16_t _CLKSpeed = 100; //I2C bus speed in khz typically 100-400
 
 	  float frequency;
 	  uint8_t hiInjection;
@@ -95,9 +98,9 @@ class TEA5767N {
 		
 	public:
 
-	  TEA5767N();
-	  void begin(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed);
-	  void deinitI2C(i2c_inst_t* i2c_type);
+	  TEA5767N(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed);
+	  void begin();
+	  void deinitI2C();
 	  void setDebug(bool OnOff);
 	  bool GetIsConnected(void);
 	  void SetIsConnected(bool);

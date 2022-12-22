@@ -13,7 +13,7 @@
 #include "pico/stdlib.h"
 #include "tea5767/tea5767.hpp"
 
-TEA5767N radio;
+TEA5767N radio(TEA5767_I2C_ADDRESS, i2c0, 16, 17, 100);
 
 // This code shows some of the uses of the TEA5767N API.
 // Test 1 Sets the radio station
@@ -36,7 +36,7 @@ int main() {
   printf("TEA5767 Start \r\n");
 
   // Init I2C
-  radio.begin(TEA5767_I2C_ADDRESS,i2c0, 4, 5, 100); 
+  radio.begin(); 
   busy_wait_ms(1000);
 
   // Test 1 Sets the radio station

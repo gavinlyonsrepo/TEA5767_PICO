@@ -11,35 +11,38 @@
 
 #include "../include/tea5767/tea5767.hpp"
 
-TEA5767N::TEA5767N() {
-  initializeTransmissionData();
-  muted = false;
-}
-
-// Initialize the I2C setup 
+// Constructor
 // Param1 :: the I2C address 0x60 for this device
 // Param2 :: The I2C interface i2c0 or ic21
 // Param3 :: The I2C Data pin SDA
 // Param4 :: The I2C clock pin SCLK
 // Param5 :: The I2C bus clock speed in Khz , max 400.
-void TEA5767N::begin(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed) {
- 
-	_i2cAddress = i2cAddress;
-	i2c_inst_t *i2c = i2c_type;
-	i2c_init(i2c, CLKspeed * 1000);
-	gpio_set_function(SDApin, GPIO_FUNC_I2C);
-	gpio_set_function(SCLKpin, GPIO_FUNC_I2C);
-	gpio_pull_up(SDApin);
-	gpio_pull_up(SCLKpin);
-	
+TEA5767N::TEA5767N(uint8_t i2cAddress, i2c_inst_t* i2c_type, uint8_t SDApin, uint8_t SCLKpin, uint16_t CLKspeed) {
+  initializeTransmissionData();
+  muted = false;
+  _i2cAddress = i2cAddress;
+  _SClkPin = SCLKpin;
+  _SDataPin = SDApin;
+  _CLKSpeed = CLKspeed;
+  i2c = i2c_type; 
+}
+
+// Initialize the I2C setup 
+void TEA5767N::begin() {
+    gpio_set_function(_SDataPin, GPIO_FUNC_I2C);
+    gpio_set_function(_SClkPin, GPIO_FUNC_I2C);
+    gpio_pull_up(_SDataPin);
+    gpio_pull_up(_SClkPin);
+    i2c_init(i2c, _CLKSpeed * 1000);
 }
 
 // Switch off the  I2C
 // Param1 :: The I2C interface i2c0 or ic21
-void TEA5767N::deinitI2C(i2c_inst_t* i2c_type)
+void TEA5767N::deinitI2C()
 {
-	i2c_inst_t *i2c = i2c_type;
-	i2c_deinit(i2c); 	
+    gpio_set_function(_SDataPin, GPIO_FUNC_NULL);
+    gpio_set_function(_SClkPin, GPIO_FUNC_NULL);
+    i2c_deinit(i2c); 	
 }
 
 // Check Connection Function
@@ -56,8 +59,7 @@ int16_t TEA5767N::CheckConnection()
 
 bool TEA5767N::GetIsConnected(void)
 {return isConnected;}
-	  
-	  
+
 void TEA5767N::SetIsConnected(bool connected)
 {isConnected = connected;}
 
