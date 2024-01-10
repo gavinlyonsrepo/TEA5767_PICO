@@ -1,16 +1,16 @@
 
-Overview
---------------------------------------------
+## Overview
+
 * Name: TEA5767_PICO
 * Description:  Library for TEA5767HN, Low-power FM stereo radio.
 * Developed on and for
 	1. Raspberry pi PICO RP2040
-	2. SDK C++ compiler G++ for arm-none-eabi
+	2. SDK C++,  compiler arm-none-eabi-g++ (15:10.3)
 	3. CMAKE , VScode
 * Ported from mroger's arduino  [ library](https://github.com/mroger/TEA5767)
 
-Hardware
-----------------------
+## Hardware
+
 
 1. Picture of the Module used 
 
@@ -33,13 +33,13 @@ On the 3.3 V bus side of the level shift , the PICO has its pull up resistors en
  ![image ](https://github.com/gavinlyonsrepo/TEA5767_PICO/blob/main/extra/images/radio1.png)
  
  
- Software
-----------------------
+## Software
+
 
 There are two  example main.cpp which contains tests showing library functions.
 There is also the library files (tea5767.cpp and tea5767.hpp)
 
-Switch between the two  examples by editing add_executable(${PROJECT_NAME} in CMakeLists.txt
+Switch between the two examples by editing add_executable(${PROJECT_NAME} in CMakeLists.txt
 
 1.  examples/Simple_Radio_FM/main.cpp
 2.  examples/Library_Demo/main.cpp
